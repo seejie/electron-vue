@@ -28,8 +28,26 @@
     </main>
 
     <div class="demo">
-      <button class="alt" @click="oncat">cat</button><br>
-      <button class="alt" @click="onffmepg">ffmepg</button>
+      <div class="row">
+        名称：<input type="text" v-model="zip">
+        <span class="btn" @click="oncat">cat</span>
+      </div>
+      <div class="row">
+        名称：<input type="text" v-model="video">
+        <div class="time">
+          开始时间：
+          <input type="text" class="number" maxlength="2" v-model="sh">时
+          <input type="text" class="number" maxlength="2" v-model="sm">分
+          <input type="text" class="number" maxlength="2" v-model="ss">秒
+        </div>
+        <div class="time">
+          结束时间：
+          <input type="text" class="number" maxlength="2" v-model="eh">时
+          <input type="text" class="number" maxlength="2" v-model="em">分
+          <input type="text" class="number" maxlength="2" v-model="es">秒
+        </div>
+        <span class="btn" @click="onffmepg">ffmepg</span>
+      </div>
     </div>
   </div>
 </template>
@@ -41,20 +59,32 @@ import { cat, ffmepg } from './cmd'
 export default {
   name: 'landing-page',
   components: { SystemInformation },
+  data () {
+    return {
+      zip: '',
+      video: '',
+      sh: '0',
+      sm: '0',
+      ss: '0',
+      eh: '0',
+      em: '0',
+      es: '0',
+    }
+  },
   methods: {
     open (link) {
       this.$electron.shell.openExternal(link)
     },
     oncat () {
       cat({
-        name: ''
+        name: this.zip
       })
     },
     onffmepg () {
       ffmepg({
-        name: '', 
-        sTime: [], 
-        eTime: []
+        name: this.video, 
+        sTime: [this.sh, this.sm, this.ss], 
+        eTime: [this.eh, this.em, this.es]
       })
     }
   }
@@ -63,7 +93,35 @@ export default {
 
 <style lang="less" scoped>
 .demo{
+  margin-top: 2rem;
   display: flex;
+  flex-direction: column;
+  .row{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    & > * {
+      margin: 0 .25rem;
+    }
+    &+.row{
+      margin-top: .5rem;
+    }
+    .btn{
+      padding: 0.25em 1em;
+      color: #42b983;
+      background-color: transparent;
+      border: 1px solid #4fc08d;
+      border-radius: 2em;
+      cursor: pointer;
+      display: inline-block;
+    }
+    .time{
+      .number{
+        width: 30px;
+        text-align: center;
+      }
+    }
+  }
 }
 </style>
 
