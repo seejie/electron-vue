@@ -23,29 +23,49 @@
           <div class="title alt">Other Documentation</div>
           <button class="alt" @click="open('https://electron.atom.io/docs/')">Electron</button>
           <button class="alt" @click="open('https://vuejs.org/v2/guide/')">Vue.js</button>
-          <button class="alt" @click="ontest">test</button>
         </div>
       </div>
     </main>
+
+    <div class="demo">
+      <button class="alt" @click="oncat">cat</button><br>
+      <button class="alt" @click="onffmepg">ffmepg</button>
+    </div>
   </div>
 </template>
 
 <script>
-  import SystemInformation from './LandingPage/SystemInformation'
+import SystemInformation from './LandingPage/SystemInformation'
+import { cat, ffmepg } from './cmd'
 
-  export default {
-    name: 'landing-page',
-    components: { SystemInformation },
-    methods: {
-      open (link) {
-        this.$electron.shell.openExternal(link)
-      },
-      ontest () {
-        console.log(111, '-----111-----')
-      }
+export default {
+  name: 'landing-page',
+  components: { SystemInformation },
+  methods: {
+    open (link) {
+      this.$electron.shell.openExternal(link)
+    },
+    oncat () {
+      cat({
+        name: ''
+      })
+    },
+    onffmepg () {
+      ffmepg({
+        name: '', 
+        sTime: [], 
+        eTime: []
+      })
     }
   }
+}
 </script>
+
+<style lang="less" scoped>
+.demo{
+  display: flex;
+}
+</style>
 
 <style>
   @import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro');
