@@ -34,6 +34,11 @@
       </div>
       <div class="row">
         名称：<input type="text" v-model="video">
+        <select v-model="videoType">
+          <option value="mp5">mp5</option>
+          <option value="mp4">mp4</option>
+          <option value="avi">avi</option>
+        </select>
         <div class="time">
           开始时间：
           <input type="text" class="number" maxlength="2" v-model="sh">时
@@ -46,7 +51,7 @@
           <input type="text" class="number" maxlength="2" v-model="em">分
           <input type="text" class="number" maxlength="2" v-model="es">秒
         </div>
-        <span class="btn" @click="onffmepg">ffmepg</span>
+        <span class="btn" @click="onffmpeg">ffmepg</span>
       </div>
     </div>
   </div>
@@ -54,7 +59,7 @@
 
 <script>
 import SystemInformation from './LandingPage/SystemInformation'
-import { cat, ffmepg } from './cmd'
+import { cat, ffmpeg } from './cmd'
 
 export default {
   name: 'landing-page',
@@ -63,6 +68,7 @@ export default {
     return {
       zip: '',
       video: '',
+      videoType: 'mp4',
       sh: '0',
       sm: '0',
       ss: '0',
@@ -77,14 +83,23 @@ export default {
     },
     oncat () {
       cat({
-        name: this.zip
+        name: this.zip,
+        onerror: err => {
+          console.log(err, '--------------')
+          alert('error')
+        }
       })
     },
-    onffmepg () {
-      ffmepg({
+    onffmpeg () {
+      ffmpeg({
         name: this.video, 
+        type: this.videoType,
         sTime: [this.sh, this.sm, this.ss], 
-        eTime: [this.eh, this.em, this.es]
+        eTime: [this.eh, this.em, this.es],
+        onerror: err => {
+          console.log(err, '--------------')
+          alert('error')
+        }
       })
     }
   }
